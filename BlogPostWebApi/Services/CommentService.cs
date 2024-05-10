@@ -53,9 +53,9 @@ public class CommentService(IUnitOfWork ofWork,
         await _ofWork.Comments.DeleteAsync(comment);
     }
 
-    public async Task<IEnumerable<CommentDto>> GetAllAsync(int id)
+    public async Task<IEnumerable<CommentDto>> GetAllAsync()
     {
-        var comments = await _ofWork.Comments.GetAllAsync(x => x.PostId == id);
+        var comments = await _ofWork.Comments.GetAllAsync(x=>x.Id>0);
         return _mapper.Map<List<CommentDto>>(comments.ToList());
     }
 }

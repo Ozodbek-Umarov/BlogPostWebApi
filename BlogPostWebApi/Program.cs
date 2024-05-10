@@ -33,6 +33,9 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
+//cashe
+builder.Services.AddMemoryCache();
+
 //Mapper
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 

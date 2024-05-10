@@ -31,11 +31,4 @@ public class CommentsController(ICommentService commentService) : ControllerBase
         var comments = await _commentService.GetAllAsync();
         return Ok(comments);
     }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
-    {
-        var comment = await _commentService.GetByIdAsync(id);
-        return Ok(comment);
-    }
 }
