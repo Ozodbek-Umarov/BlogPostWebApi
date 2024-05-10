@@ -50,29 +50,12 @@ public class CommentService(IUnitOfWork ofWork,
             throw new StatusCodeException(HttpStatusCode.NotFound, "Comment not found");
         }
 
-        try
-        {
-            await _ofWork.Comments.DeleteAsync(comment);
-        }
-        catch (Exception ex)
-        {
-            throw new StatusCodeException(HttpStatusCode.InternalServerError, "Failed to delete comment.");
-        }
+        await _ofWork.Comments.DeleteAsync(comment);
     }
 
-    public async Task<List<CommentDto>> GetAllAsync()
+    public async Task<IEnumerable<CommentDto>> GetAllAsync(int id)
     {
-        var comments = await _ofWork.Comments.GetAllAsync();
+        var comments = await _ofWork.Comments.GetAllAsync(x => x.PostId == id);
         return _mapper.Map<List<CommentDto>>(comments.ToList());
-    }
-
-    public async Task<CommentDto> GetByIdAsync(int id)
-    {
-        var comment = await _ofWork.Comments.GetByIdAsync(id);
-        if (comment is null)
-        {
-            throw new StatusCodeException(HttpStatusCode.NotFound, "Comment not found");
-        }
-        return _mapper.Map<CommentDto>(comment);
     }
 }

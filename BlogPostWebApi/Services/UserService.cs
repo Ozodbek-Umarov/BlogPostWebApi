@@ -27,7 +27,7 @@ public class UserService(IUnitOfWork ofWork,
         await _ofWork.Users.UpdateAsync(user);
     }
 
-    public async Task<List<UserDto>> GetAllAsync()
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
         var users = await _ofWork.Users.GetAllAsync(x => x.IsActive);
         return _mapper.Map<List<UserDto>>(users);

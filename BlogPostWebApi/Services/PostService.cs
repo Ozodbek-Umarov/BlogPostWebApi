@@ -31,7 +31,7 @@ public class PostService(IUnitOfWork ofWork,
         await _ofWork.Posts.UpdateAsync(post);
     }
 
-    public async Task<List<PostDto>> GetAllAsync()
+    public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
         var posts = await _ofWork.Posts.GetAllAsync(x => x.IsActive);
         return _mapper.Map<List<PostDto>>(posts.ToList());
@@ -47,7 +47,7 @@ public class PostService(IUnitOfWork ofWork,
         return _mapper.Map<PostDto>(post);
     }
 
-    public async Task<List<PostDto>> GetByTitleAsync(string title)
+    public async Task<IEnumerable<PostDto>> GetByTitleAsync(string title)
     {
         var posts = await _ofWork.Posts.GetByNameAsync(x => x.Title.Contains(title));
         return _mapper.Map<List<PostDto>>(posts.ToList());

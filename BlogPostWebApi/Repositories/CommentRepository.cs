@@ -1,6 +1,7 @@
 ﻿using BlogPostWebApi.DbContexts;
 using BlogPostWebApi.Entities;
 using BlogPostWebApi.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace BlogPostWebApi.Repositories;
@@ -26,4 +27,7 @@ public class CommentRepository(AppDbContext dbContext) : ICommentRepository
         var comments  = _dbContext.Comments.Where(expression);
         return comments;
     }
+
+    public async Task<Comment?> GetByIdAsync(int id)
+     => await _dbContext.Comments.FirstOrDefaultAsync(x => x.Id == id);
 }

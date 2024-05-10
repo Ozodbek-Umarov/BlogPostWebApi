@@ -34,7 +34,7 @@ public class AdminService(IUnitOfWork ofWork) : IAdminService
         await _ofWork.Users.UpdateAsync(user);
     }
 
-    public async Task<List<User>> GetAllAdminAsync()
+    public async Task<IEnumerable<User>> GetAllAdminAsync()
     {
         var users = await _ofWork.Users.GetAllAsync(u => u.Role == Role.Admin && u.IsActive);
         return users.ToList();
