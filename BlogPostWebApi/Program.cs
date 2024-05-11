@@ -1,6 +1,7 @@
 using BlogPostWebApi.Common.Mappers;
 using BlogPostWebApi.DbContexts;
 using BlogPostWebApi.Interfaces;
+using BlogPostWebApi.Interfaces.Common;
 using BlogPostWebApi.Interfaces.Repositories;
 using BlogPostWebApi.Interfaces.Services;
 using BlogPostWebApi.Repositories;
@@ -33,12 +34,16 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
+builder.Services.AddTransient<IAuthManager, AuthManager>();
+
 //cashe
 builder.Services.AddMemoryCache();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
+//IHttpContextAccessor 
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
