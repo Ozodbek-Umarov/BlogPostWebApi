@@ -1,4 +1,5 @@
-﻿using BlogPostWebApi.DTOs.Users;
+﻿using BlogPostWebApi.Common.Utils;
+using BlogPostWebApi.DTOs.Users;
 using BlogPostWebApi.Interfaces;
 using BlogPostWebApi.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +34,9 @@ public class AdminsController(IAdminService adminService,
 
     [HttpGet("admins")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllAdminAsync()
-        => Ok(await _adminService.GetAllAdminAsync());
+    public async Task<IActionResult> GetAdmins([FromQuery] PaginationParams @params)
+    {
+        var admins = await _adminService.GetAllAdminAsync(@params);
+        return Ok(admins);
+    }
 }

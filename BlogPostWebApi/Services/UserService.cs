@@ -1,19 +1,23 @@
 ﻿using AutoMapper;
 using BlogPostWebApi.Common.Exceptions;
 using BlogPostWebApi.Common.Helpers;
+using BlogPostWebApi.Common.Utils;
 using BlogPostWebApi.DTOs.Users;
 using BlogPostWebApi.Entities;
 using BlogPostWebApi.Interfaces;
 using BlogPostWebApi.Interfaces.Repositories;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace BlogPostWebApi.Services;
 
 public class UserService(IUnitOfWork ofWork,
-                         IMapper mapper) : IUserService
+                         IMapper mapper,
+                         IHttpContextAccessor accessor) : IUserService
 {
     private readonly IUnitOfWork _ofWork = ofWork;
     private readonly IMapper _mapper = mapper;
+    private readonly IHttpContextAccessor _accessor = accessor;
 
     public async Task DeleteAsync(int id)
     {
@@ -27,10 +31,14 @@ public class UserService(IUnitOfWork ofWork,
         await _ofWork.Users.UpdateAsync(user);
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllAsync()
+    public async Task<IEnumerable<UserDto>> GetAllAsync(PaginationParams @params)
     {
         var users = await _ofWork.Users.GetAllAsync(x => x.IsActive);
-        return _mapper.Map<List<UserDto>>(users);
+        var metadata = new PaginationMetaData(users.Count(), @params.PageIndex, @params.PageSize);
+
+        _accessor.HttpContext?.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        return (IEnumerable<UserDto>)_mapper.Map<List<User>>(users.Skip(@params.SkipCount()).Take(@params.PageSize));
     }
 
     public async Task<UserDto> GetByIdAsync(int id)

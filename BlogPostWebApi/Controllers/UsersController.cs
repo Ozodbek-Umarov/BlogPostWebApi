@@ -1,4 +1,5 @@
-﻿using BlogPostWebApi.DTOs.Users;
+﻿using BlogPostWebApi.Common.Utils;
+using BlogPostWebApi.DTOs.Users;
 using BlogPostWebApi.Interfaces;
 using BlogPostWebApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +23,10 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpGet("users")]
     [Authorize(Roles = "Admin, SuperAdmin")]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetAllAsync([FromQuery] PaginationParams @params)
     {
-        return Ok(await _userService.GetAllAsync());
+        var users = await _userService.GetAllAsync(@params);
+        return Ok(users);
     }
 
     [HttpPut]

@@ -1,4 +1,5 @@
-﻿using BlogPostWebApi.Entities;
+﻿using BlogPostWebApi.Common.Utils;
+using BlogPostWebApi.Entities;
 
 namespace BlogPostWebApi.Interfaces.Services;
 
@@ -6,5 +7,5 @@ public interface IAdminService
 {
     Task ChangeUserRoleAsync(int id);
     Task DeleteUserAsync(int id);
-    Task<IEnumerable<User>> GetAllAdminAsync();
+    Task<IEnumerable<User>> GetAllAdminAsync(PaginationParams @params);
 }
